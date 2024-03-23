@@ -11,7 +11,7 @@ source ./script/makeList.sh
 
 date=$(date '+%m%d_%H%M')
 
-perl -pi -e 's/(\s*\$dumpfile\(\")([0-9A-Za-z\_]*.vcd)(\"\)\;)/$1.\/VCD\/$2$3/g' ./$VERILOG_TB_NAME
+perl -pi -e 's/(\s*\$dumpfile\(\")([0-9A-Za-z\_]*.vcd)(\"\)\;)/$1.\/VCD\/'$DESIGN_NAME'.vcd$3/g' ./$VERILOG_TB_NAME
 
 iverilog -o ./VVP/$DESIGN_NAME.vvp -c ./list.txt 
 vvp -l ./LOG/$DESIGN_NAME"_"$date.log -v ./VVP/$DESIGN_NAME.vvp

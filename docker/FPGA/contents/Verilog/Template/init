@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-designName="kitchenTimer"
-rtlPath="/RTL/RTL_Synthesis/"
-verilogTBPath="/RTL/TB/kitchenTimer_tb.v"
-dutName="kitchenTimer"
+designName=""
+rtlPath=""
+verilogTBPath=""
+dutName=""
 verilogTBName=$(basename "$verilogTBPath")
 currentPath=$(pwd)
 
