@@ -1,0 +1,6 @@
+export DESIGN_NAME="kitchenTimer"
+export RTL_PATH="/home/fpga/KitchenTimer/RTL/RTL_Synthesis/"
+export VERILOG_TB_PATH="/home/fpga/KitchenTimer/RTL/TB/kitchenTimer_tb.v"
+export VERILOG_TB_NAME="kitchenTimer_tb.v"
+export DUT="kitchenTimer"
+export PRJ_DIR="/home/fpga/KitchenTimer"

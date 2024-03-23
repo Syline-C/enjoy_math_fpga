@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+designName=""
+rtlPath=""
+verilogTBPath=""
+verilogTBName=$(basename "$verilogTBPath")
+
+if [ -f ./script/parameter.sh ]; then rm -rf ./script/parameter.sh; fi
+
+echo "export DESIGN_NAME=\"$designName\"" >> ./script/parameter.sh
+echo "export RTL_PATH=\"$currentPath$rtlPath\"" >> ./script/parameter.sh
+echo "export VERILOG_TB_PATH=\"$currentPath$verilogTBPath\"" >> ./script/parameter.sh
+echo "export VERILOG_TB_NAME=\"$verilogTBName\"" >> ./script/parameter.sh

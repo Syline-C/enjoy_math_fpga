@@ -1,0 +1,10 @@
+#!/bin/bash
+
+kill -9 $( ps | grep compile | awk '{print $1}') 
+kill -9 $( ps | grep vvp | awk '{print $1}')
+
+rm -rf 00_COMPILE >> /dev/null
+rm -rf 01_DIAGRAM >> /dev/null
+rm -rf 10_SYNTH >> /dev/null
+rm -rf 11_AFT_SYN_DIAGRAM >> /dev/null
+rm -rf 99_DEBUG >> /dev/null

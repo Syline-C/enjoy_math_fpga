@@ -1,0 +1,7 @@
+#!/bin/bash
+
+vcdPath=""
+
+if [ -f ./script/parameter.sh ]; then rm -rf ./script/parameter.sh; fi
+
+echo "export VCD_PATH=\"$vcdPath.vcd" > ./script/parameter.sh

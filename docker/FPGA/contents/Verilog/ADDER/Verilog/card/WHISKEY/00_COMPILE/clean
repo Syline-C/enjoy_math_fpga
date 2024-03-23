@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -rf ./VVP > /dev/null
+rm -rf ./VCD > /dev/null
+rm -rf list.txt > /dev/null

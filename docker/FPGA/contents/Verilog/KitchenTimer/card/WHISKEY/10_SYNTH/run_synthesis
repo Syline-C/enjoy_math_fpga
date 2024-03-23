@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ! -d LOG ]; then mkdir LOG; fi
+if [ -f ./script/yosys/synthesis.ys ]; then rm -rf ./script/yosys/synthesis.ys; fi
+
+source ./script/parameter.sh
+source ./script/makeSynScript.sh
+
+date=$(date '+%m%d_%H%M')
+
+yosys -l ./LOG/$DESIGN_NAME"_"$date.log -s ./script/yosys/synthesis.ys  
+

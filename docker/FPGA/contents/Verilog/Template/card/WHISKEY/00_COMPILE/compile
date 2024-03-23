@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -d VVP ]; then mkdir VVP; fi
+if [ ! -d VCD ]; then mkdir VCD; fi
+if [ ! -d LOG ]; then mkdir LOG; fi
+if [  -f list.txt ]; then rm -rf list.txt; fi
+
+
+source ./script/parameter.sh
+source ./script/makeList.sh
+
+date=$(date '+%m%d_%H%M')
+
+perl -pi -e 's/(\s*\$dumpfile\(\")([0-9A-Za-z\_]*.vcd)(\"\)\;)/$1.\/VCD\/$2$3/g' ./$VERILOG_TB_NAME
+
+iverilog -o ./VVP/$DESIGN_NAME.vvp -c ./list.txt 
+vvp -l ./LOG/$DESIGN_NAME"_"$date.log -v ./VVP/$DESIGN_NAME.vvp
+

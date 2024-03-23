@@ -1,0 +1,7 @@
+#!/bin/bash
+
+rm -rf ./DOT > /dev/null
+rm -rf ./JSON > /dev/null
+rm -rf ./LOGIC > /dev/null
+rm -rf ./SCHEMA > /dev/null
+rm -rf ./LOG > /dev/null

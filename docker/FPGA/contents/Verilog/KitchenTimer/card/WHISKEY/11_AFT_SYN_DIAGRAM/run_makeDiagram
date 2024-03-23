@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./script/parameter.sh
+
+dot -Tpdf ./DOT/$DESIGN_NAME.dot -o ./$DESIGN_NAME"_SYNTH".pdf > /dev/null
+netlistsvg ./JSON/$DESIGN_NAME.json -o $DESIGN_NAME"_CIRCUIT".svg
+

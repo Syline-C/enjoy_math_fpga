@@ -1,0 +1,74 @@
+#!/bin/bash
+
+
+designName="kitchenTimer"
+rtlPath="/RTL/RTL_Synthesis/"
+verilogTBPath="/RTL/TB/kitchenTimer_tb.v"
+dutName="kitchenTimer"
+verilogTBName=$(basename "$verilogTBPath")
+currentPath=$(pwd)
+
+if [ -f ./card/WHISKEY/card/parameter.sh ]; then rm -rf ./card/WHISKEY/card/parameter.sh; fi
+
+echo "======================================================="
+echo "	write Global Parameter"
+
+echo "export DESIGN_NAME=\"$designName\"" >> ./card/WHISKEY/card/parameter.sh
+echo "export RTL_PATH=\"$currentPath$rtlPath\"" >> ./card/WHISKEY/card/parameter.sh
+echo "export VERILOG_TB_PATH=\"$currentPath$verilogTBPath\"" >> ./card/WHISKEY/card/parameter.sh
+echo "export VERILOG_TB_NAME=\"$verilogTBName\"" >> ./card/WHISKEY/card/parameter.sh
+echo "export DUT=\"$dutName\"" >> ./card/WHISKEY/card/parameter.sh
+echo "export PRJ_DIR=\"`pwd`\"" >> ./card/WHISKEY/card/parameter.sh
+
+echo "	check ./card/WHISKEY/card/parameter.sh "
+echo "======================================================="
+
+echo ""
+
+echo "======================================================="
+echo "	make Initial Whiksey Environment"
+
+if [ -d 00_COMPILE ]; then rm -rf 00_COMPILE && cp -r ./card/WHISKEY/00_COMPILE ./; else cp -r ./card/WHISKEY/00_COMPILE ./; fi
+
+echo "	00_COMPILE is Copied from Master Environment file"
+echo "	    \\_ run ./compile.sh to compile Setted Envitonment"
+echo "	    \\_ if want compile new Env, Modify init file's Varibale and run ./init and ./compile.sh as sequently "
+echo ""
+
+if [ -d 01_DIAGRAM ]; then rm -rf 01_DIAGRAM && cp -r ./card/WHISKEY/01_DIAGRAM/ ./ ; else cp -r ./card/WHISKEY/01_DIAGRAM ./; fi
+echo "	01_DIAGRAM is Copied from Master Environment file"
+echo "	    \\_ run ./run_makeDiagram to make Circuit Diagram of All Module"
+echo "	    \\_ if want compile new Env, Modify init file's Varibale and run ./init and ./run_makeDiagram as sequently "
+echo ""
+
+if [ -d 10_SYNTH ]; then rm -rf 10_SYNTH && cp -r ./card/WHISKEY/10_SYNTH ./; else cp -r ./card/WHISKEY/10_SYNTH ./; fi
+echo "	10_SYNTH is Copied from Master Environment file"
+echo "	    \\_ run ./run_synthesis to Logical and Physical Synthesis Veriolg Design"
+echo "	    \\_ if want compile new Env, Modify init file's Varibale and run ./init and ./run_synthesis as sequently "
+echo ""
+
+if [ -d 11_AFT_SYN_DIAGRAM ]; then rm -rf 11_AFT_SYN_DIAGRAM && cp -r ./card/WHISKEY/11_AFT_SYN_DIAGRAM/ ./ ; else cp -r ./card/WHISKEY/11_AFT_SYN_DIAGRAM ./; fi
+echo "	11_AFT_SYN_DIAGRAM is Copied from Master Environment file"
+echo "	    \\_ run ./run_makeDiagram to make TOP Level Circuit Diagram of After Synthesis Design and print Data flow as PDF"
+echo "	    \\_ if want compile new Env, Modify init file's Varibale and run ./init and ./run_makeDiagram as sequently "
+echo ""
+
+if [ -d 99_DEBUG ]; then rm -rf 99_DEBUG && cp -r ./card/WHISKEY/99_DEBUG ./; else cp -r ./card/WHISKEY/99_DEBUG ./; fi
+echo "	99_DEBUG is Copied from Master Environment file"
+echo "	    \\_ run ./run_gtkwave to View Waveform made by Verilog TB"
+echo "	    \\_ if want compile new Env, Modify init file's Varibale and run ./init and ./run_gtkwave as sequently "
+echo "	    \\_ Must run this Process After running 00_COMPILE. 99_DEBUG need to read VCD File made by 00_COMPILE result "
+echo ""
+
+echo "======================================================="
+echo ""
+
+source ./card/WHISKEY/card/parameter.sh
+
+cp $VERILOG_TB_PATH ./00_COMPILE
+cp ./card/WHISKEY/card/parameter.sh ./00_COMPILE/script
+cp ./card/WHISKEY/card/parameter.sh ./01_DIAGRAM/script
+cp ./card/WHISKEY/card/parameter.sh ./10_SYNTH/script
+cp ./card/WHISKEY/card/parameter.sh ./11_AFT_SYN_DIAGRAM/script
+
+echo "export VCD_PATH=\"$currentPath/00_COMPILE/VCD/$DESIGN_NAME.vcd\"" > ./99_DEBUG/script/parameter.sh

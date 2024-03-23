@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ./script/parameter.sh
+echo $VCD_PATH
+gtkwave $VCD_PATH

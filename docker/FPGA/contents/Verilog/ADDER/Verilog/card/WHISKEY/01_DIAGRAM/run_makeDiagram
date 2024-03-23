@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ ! -d DOT ]; then mkdir DOT; fi
+if [ ! -d JSON ]; then mkdir JSON; fi
+if [ ! -d LOGIC ]; then mkdir LOGIC; fi
+if [ ! -d SCHEMA ]; then mkdir SCHEMA; fi
+if [ ! -d LOG ]; then mkdir LOG; fi
+
+if [ -d ./script/yosys ]; then rm -rf ./script/yosys; mkdir ./script/yosys; fi
+
+source ./script/parameter.sh
+source ./script/makeSynScript.sh
+
+yosys_list=($(ls ./script/yosys))
+
+for script in "${yosys_list[@]}"; do
+	filename=$(echo $script | awk -F "." '{print $1}')
+
+	yosys -l ./LOG/$filename.log -s ./script/yosys/$filename.ys  
+
+	dot -Tpdf ./DOT/$filename.dot -o ./LOGIC/$filename.pdf > /dev/null
+	netlistsvg ./JSON/$filename.json -o ./SCHEMA/$filename.svg
+done
+
