@@ -6,7 +6,7 @@ if [ ! -d LOGIC ]; then mkdir LOGIC; fi
 if [ ! -d SCHEMA ]; then mkdir SCHEMA; fi
 if [ ! -d LOG ]; then mkdir LOG; fi
 
-if [ -d ./script/yosys ]; then rm -rf ./script/yosys; mkdir ./script/yosys; fi
+if [ -d ./script/yosys ]; then rm -rf ./script/yosys; mkdir -p ./script/yosys; fi
 
 source ./script/parameter.sh
 source ./script/makeSynScript.sh
