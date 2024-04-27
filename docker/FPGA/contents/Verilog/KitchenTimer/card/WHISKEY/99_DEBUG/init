@@ -1,7 +1,8 @@
 #!/bin/bash
 
 vcdPath=""
+designName=""
 
 if [ -f ./script/parameter.sh ]; then rm -rf ./script/parameter.sh; fi
 
-echo "export VCD_PATH=\"$vcdPath.vcd" > ./script/parameter.sh
+echo "export VCD_PATH=\"$vcdPath$designName.vcd\"" > ./script/parameter.sh

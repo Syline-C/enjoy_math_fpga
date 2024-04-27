@@ -28,9 +28,10 @@ open -a XQuartz
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 
 if [ ! -n "$is_image_maked" ]; then
-	docker build --platform linux/amd64 --tag $docker_repo_name .
-	# For intel Mac
-	#docker build --platform linuxx --tag $docker_repo_name .
+	
+		docker build --platform linux/amd64 --tag $docker_repo_name .
+		# For intel Mac
+		#docker build --platform linux --tag $docker_repo_name .
 	img_Flag=1
 elif [ "$is_image_maked" = "$docker_repo_name" ]; then
 	img_Flag=1

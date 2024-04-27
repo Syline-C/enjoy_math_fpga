@@ -3,8 +3,10 @@
 
 designName=""
 rtlPath=""
+prjDir=""
 
 if [ -f ./script/parameter.sh ]; then rm -rf ./script/parameter.sh; fi
 
 echo "export DESIGN_NAME=\"$designName\"" >> ./script/parameter.sh
 echo "export RTL_PATH=\"$currentPath$rtlPath\"" >> ./script/parameter.sh
+echo "export PRJ_DIR=\"$prjDir\"" >> ./script/parameter.sh

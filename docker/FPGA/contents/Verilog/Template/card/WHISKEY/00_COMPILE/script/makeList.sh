@@ -9,4 +9,3 @@ for rtl in "${rtl_list[@]}"; do
 	echo $RTL_PATH$rtl >> list.txt
 done
 
-mv list.txt $PRJ_DIR/00_COMPILE  > /dev/null
