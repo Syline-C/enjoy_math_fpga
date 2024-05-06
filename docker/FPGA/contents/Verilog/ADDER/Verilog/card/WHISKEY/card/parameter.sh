@@ -1,6 +1,6 @@
 export DESIGN_NAME="ADDER"
 export RTL_PATH="/home/fpga/ADDER/Verilog/RTL/LOGIC/"
-export VERILOG_TB_PATH="/home/fpga/ADDER/Verilog/RTL/TB/"
+export VERILOG_TB_PATH="/home/fpga/ADDER/Verilog/RTL/TB/adderTB.v"
 export VERILOG_TB_NAME="adderTB.v"
 export DUT="ADDER"
 export PRJ_DIR="/home/fpga/ADDER/Verilog"

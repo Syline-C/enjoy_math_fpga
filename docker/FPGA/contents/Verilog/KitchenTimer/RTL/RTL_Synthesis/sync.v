@@ -122,7 +122,7 @@ always @( posedge CLK or negedge RES_X) begin
 	if( !RES_X ) 	
 		READ_START <= 1'b0;
 	else if ( DEBOUNCE_PULSE )
-		READ_START <= START;
+		READ_START <= START; // X
 end
 
 // Delay One DEBOUNCE_PULSE Cycle READ_START

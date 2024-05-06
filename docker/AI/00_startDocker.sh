@@ -4,12 +4,9 @@ docker_cont_name="gym_enjoy_math"
 docker_repo_name="gym_repo"
 current_dir=`pwd`
 
-if [ -d ./contents/card ]; then
-	rm -rf ./contents/card 
-	cp -r ./card ./contents
-else
-	cp -r ./card ./contents
-fi
+if [ -d ./contents/card ]; then rm -rf ./contents/card; cp -r ./card ./contents; else cp -r ./card/ ./contents; fi 
+if [ -d ./contents/AI/card ]; then rm -rf ./contents/AI/card; mkdir ./contents/AI/card; cp -r ./card/python ./contents/AI/card; else mkdir ./contents/AI/card; cp -r ./card/python ./contents/AI/card; fi 
+
 
 xserver_ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
 socat_pid=`lsof -i TCP:6000 | awk '{print $2}' | grep -ve '[A-Z]'`
@@ -32,6 +29,8 @@ socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 
 if [ ! -n "$is_image_maked" ]; then
 	docker build --platform linux/amd64 --tag $docker_repo_name .
+	# For intel Mac
+	#docker build --platform linux --tag $docker_repo_name .
 	img_Flag=1
 elif [ "$is_image_maked" = "$docker_repo_name" ]; then
 	img_Flag=1
@@ -46,12 +45,12 @@ if [ "$img_Flag" = 1 ]; then
 			if [ ! -n "$is_container_run" ]; then
 				docker run -d -it \
 					-e DISPLAY=$xserver_ip:0 \
-					-v $current_dir/contents:/home/conda \
+					-v $current_dir/contents/AI:/home/conda \
+					-v $current_dir/contents/card:/home/card \
+					-p 80:80 \
 					-v /tmp/.X11-unix:/tmp/.X11-unix \
-					-p 8888:8888 \
 					--name $docker_cont_name $docker_repo_name /bin/bash
 
-				#is_container_run=`docker ps -a | grep "$docker_repo_name" | awk '{print $7}'`
 				is_container_run=`docker ps -a --format "{{.Image}},{{.Status}}" | grep $docker_repo_name | awk -F "," '{print $2}' | awk '{print $1}'`
 			fi
 		fi

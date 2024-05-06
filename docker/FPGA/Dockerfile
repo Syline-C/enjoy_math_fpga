@@ -11,20 +11,21 @@ RUN apt-get update
 RUN apt-get install -y wget \ 
 		vim git zsh language-pack-en python3-pip iverilog gtkwave x11-apps tmux dbus-x11 pkg-config tcl clang tcl-dev \
 		libreadline-dev bison flex python3-gi gobject-introspection gir1.2-gtk-3.0 graphviz python-opengl mesa-utils \
-		libgl1-mesa-glx npm nodejs yosys inkscape tree evince
+		libgl1-mesa-glx npm nodejs yosys inkscape tree evince doxygen systemctl nginx
 
 RUN npm install n -g &&  n 18.19.1
-RUN	pip install powerline-shell
+RUN	pip install powerline-shell 
 
 RUN update-locale
 
-EXPOSE 8888
+EXPOSE 80
 
 RUN wget \
     https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
     && mkdir /root/.conda \
     && bash Miniconda3-latest-Linux-x86_64.sh -b \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
+
 
 RUN npm install -g netlistsvg
 

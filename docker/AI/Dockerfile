@@ -1,24 +1,24 @@
 FROM ubuntu:20.04
 LABEL maintainer="Choi"
 LABEL version="1.0.0"
-LABEL description="Artificial Inteligence Linux Env"
+LABEL description="FPGA Artificial Inteligence Linux Env"
 
-ENV home_dir /home/conda
-ENV CONDA_PATH="/root/miniconda3/bin/conda"
-ENV CONDA_NAME="conda"
+RUN ln -snf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+WORKDIR /home/conda
 
-WORKDIR ${home_dir}
-COPY . ${home_dir}
-COPY ./card/ ${home_dir}
 
 RUN apt-get update 
-RUN apt-get install -y wget vim git language-pack-en python3-pip x11-apps dbus-x11 tmux python-opengl mesa-utils libgl1-mesa-glx tree
-RUN pip install powerline-shell
+RUN apt-get install -y wget \ 
+		vim git zsh language-pack-en python3-pip x11-apps tmux dbus-x11 pkg-config tcl clang tcl-dev \
+		libreadline-dev bison flex python3-gi gobject-introspection gir1.2-gtk-3.0 graphviz python-opengl mesa-utils \
+		libgl1-mesa-glx npm nodejs inkscape tree evince doxygen systemctl nginx
+
+RUN npm install n -g &&  n 18.19.1
+RUN	pip install powerline-shell 
 
 RUN update-locale
 
-#For Jupyter
-EXPOSE 8888
+EXPOSE 80
 
 RUN wget \
     https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
@@ -27,7 +27,7 @@ RUN wget \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
 
 
-ENTRYPOINT ["/home/conda/card/init.sh"]
+ENTRYPOINT ["/home/card/init.sh"]
 
 SHELL ["/bin/bash"]
 

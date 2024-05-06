@@ -3,9 +3,9 @@
 
 designName="ADDER"
 rtlPath="/RTL/LOGIC/"
-verilogTBPath="/RTL/TB/"
+verilogTBPath="/RTL/TB/adderTB.v"
 dutName="ADDER"
-verilogTBName="adderTB.v"
+verilogTBName=$(basename "$verilogTBPath")
 currentPath=$(pwd)
 
 if [ -f ./card/WHISKEY/card/parameter.sh ]; then rm -rf ./card/WHISKEY/card/parameter.sh; fi
@@ -65,7 +65,7 @@ echo ""
 
 source ./card/WHISKEY/card/parameter.sh
 
-cp $VERILOG_TB_PATH$verilogTBName ./00_COMPILE
+cp $VERILOG_TB_PATH ./00_COMPILE
 cp ./card/WHISKEY/card/parameter.sh ./00_COMPILE/script
 cp ./card/WHISKEY/card/parameter.sh ./01_DIAGRAM/script
 cp ./card/WHISKEY/card/parameter.sh ./10_SYNTH/script

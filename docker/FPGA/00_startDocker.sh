@@ -28,10 +28,9 @@ open -a XQuartz
 socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 
 if [ ! -n "$is_image_maked" ]; then
-	
-		docker build --platform linux/amd64 --tag $docker_repo_name .
-		# For intel Mac
-		#docker build --platform linux --tag $docker_repo_name .
+	docker build --platform linux/amd64 --tag $docker_repo_name .
+	# For intel Mac
+	#docker build --platform linuxx --tag $docker_repo_name .
 	img_Flag=1
 elif [ "$is_image_maked" = "$docker_repo_name" ]; then
 	img_Flag=1
@@ -49,6 +48,7 @@ if [ "$img_Flag" = 1 ]; then
 					-v $current_dir/contents/Verilog:/home/fpga \
 					-v $current_dir/contents/AI:/home/conda \
 					-v $current_dir/contents/card:/home/card \
+					-p 80:80 \
 					-v /tmp/.X11-unix:/tmp/.X11-unix \
 					--name $docker_cont_name $docker_repo_name /bin/bash
 

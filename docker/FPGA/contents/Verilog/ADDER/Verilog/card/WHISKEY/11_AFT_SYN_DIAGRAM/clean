@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -rf ./DOT/*.dot > /dev/null
-rm -rf ./JSON/*.json > /dev/null
-rm -rf *.svg > /dev/null
-rm -rf *.pdf > /dev/null
