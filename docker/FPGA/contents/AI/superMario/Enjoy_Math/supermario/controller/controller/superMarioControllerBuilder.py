@@ -17,7 +17,7 @@ from .superMarioModelController import superMarioModelController
 
 class superMarioControllerBuilder(IsuperMarioController):
 
-    def __init__(self, gymMario, title ):
+    def __init__(self, gymMario, title, mode ):
         """ 
         @brief              :   Function to initialize the Controller Builder class that creates and manages Super Mario's controller classes
         @param gymMario     :   openAI's super mario bros environment
@@ -26,6 +26,7 @@ class superMarioControllerBuilder(IsuperMarioController):
         """
         self.gymMario                   =   gymMario
         self.title                      =   title
+        self.mode                       =   mode
         self.marioModelController       =   None
         self.marioViewController        =   None
         #TODO
@@ -41,7 +42,7 @@ class superMarioControllerBuilder(IsuperMarioController):
         @brief              :   Function to create and assign the Super Mario Viewer Controller class
         @return             :   Super Mario Viewer Controller Class Instance
         """
-        marioViewController   = superMarioViewController(self.gymMario, self.title)
+        marioViewController   = superMarioViewController(self.gymMario, self.title, self.mode)
         
         if marioViewController is DEFINE._DEFINE_NULL:
             logger.instanceEmptyAssertLog('viewController')

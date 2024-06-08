@@ -14,5 +14,6 @@ else
 fi
 
 cp /home/card/nginx/conf/nginx.conf /etc/nginx/conf.d
+cp /home/card/jupyter/run_jupyter.sh /home/conda/superMario/
 
 exec /bin/bash

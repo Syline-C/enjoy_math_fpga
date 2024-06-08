@@ -34,30 +34,34 @@ class gymMario:
 
 class superMario(Wrapper):
    
-    def __init__(self, gymMario:Env, title):
+    #def __init__(self, gymMario:Env, title):
+    def __init__(self, gymMario:Env, title, mode):
         """ 
         @brief              :   Function to create a customized Super Mario environment from Facade Class
         @param gymMario     :   openAI's Super Mario environment created from the gymMario class
         @param title        :   Super Mario screen title
         @return             :   None
         """
-        self.marioFacede = None
-
-        self.marioFacade = marioFacade(gymMario, title)
+        self.mode           =   mode
+        self.marioFacade = marioFacade(gymMario, title, mode)
 
         if self.marioFacade is DEFINE._DEFINE_NULL:
            logger.instanceEmptyAssertLog('Facade') 
 
 
-    def step(self):
+    def step(self, action=None):
         """ 
         @brief              :   Returns the result of Mario's decision
         @return state       :   Mario's state according to decision making as an Integer
         @return reward      :   Reward value based on decision-making as an Float
         @return done        :   True if decision-making is in progress, False otherwisee as an Boolean
         """
+        if self.mode == 'command':
+            return self.marioFacade.step()
+        elif self.mode == 'interactive':
+            if action is not 'None':
+                return self.marioFacade.interactiveStep(action)
 
-        return self.marioFacade.step()
 
     def reset(self):
         """ 
@@ -71,8 +75,11 @@ class superMario(Wrapper):
         @brief              :   Function to render Mario's game data to a window
         @return             :   None
 		"""
-        self.marioFacade.render(reward)
-
+        if self.mode == 'command':
+            self.marioFacade.render(reward)
+        elif self.mode == 'interactive':
+            window = self.marioFacade.render(reward)
+            return window
 
 class marioBuilder:
 
@@ -87,15 +94,20 @@ class marioBuilder:
         self.builder        = None
         self.baseMario      = gymMario(level)
 
+        self.mode           = None
+
     def build(self):
         """ 
         @brief              :   Build a customized Super Mario environment and openAI’s Mario environment
         @return  builder    :   Built Super Mario environment as superMario Class Instance
         """
-        self.builder     = superMario(self.baseMario, self.title)
+        self.builder     = superMario(self.baseMario, self.title, self.mode)
 
         if self.builder is DEFINE._DEFINE_NULL:
            logger.instanceEmptyAssertLog('builder') 
 
         return self.builder
+
+    def set_mode(self, mode):
+        self.mode = mode
 

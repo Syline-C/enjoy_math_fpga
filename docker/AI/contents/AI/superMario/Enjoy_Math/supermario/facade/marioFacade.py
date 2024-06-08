@@ -20,11 +20,13 @@ from ..observer.Iobserver import Iobserver
 from ..observer.observer import observer
 
 from logger.logger import logger
+from logger.actionDataLogger import actionDataLogger
+from logger.frameDataLogger import frameDataLogger
 from define import DEFINE
 
 class marioFacade(Iobserver):
 
-    def __init__(self, gymMario, title):
+    def __init__(self, gymMario, title, mode):
         """ 
         @brief              :   Function to initialize the facade class that connects Super Mario's backend environment and builder class
         @param gymMario     :   openAI's super mario bros environment
@@ -37,16 +39,22 @@ class marioFacade(Iobserver):
         self.actionCoordinator  = None
         self.drawCoordinator    = None
         self.observer           = None
+        self.actionLogger       = None
+        self.frameLogger        = None
+        self.mode               = mode
 
-        self.controllerBuilder  = superMarioControllerBuilder(gymMario, title)
+        self.controllerBuilder  = superMarioControllerBuilder(gymMario, title, mode)
         self.actionCoordinator  = superMarioActionCoordinator(self.controllerBuilder, SIMPLE_MOVEMENT)
         self.drawCoordinator    = superMarioDrawCoordinator(self.controllerBuilder)
 
         self.viewController     = self.controllerBuilder.get_marioViewController()
         self.modelController    = self.controllerBuilder.get_marioModelController()
+        self.actionLogger       = actionDataLogger()
+        self.frameLogger        = frameDataLogger() 
         self.observer           = observer()
-        
+       
         self.set_observer()
+        self.makeLog()
 
     def step(self):
         """
@@ -55,7 +63,31 @@ class marioFacade(Iobserver):
         @return reward      :   Reward Value based on Mario's decision-making results 
         @return done        :   Whether to reset the game according to the results of Mario's decision
         """
-        return self.actionCoordinator.makeStep()
+
+        state, reward, done = self.actionCoordinator.makeStep()
+        self.writeLog(state, reward)
+        
+        if reward == DEFINE._DEFINE_REWARD_MAX_MIN_VAL :
+           self.closeLogStream()
+
+        return (state, reward, done)
+
+    def interactiveStep(self, action):
+        """
+        @brief              :   Function that returns data based on the results of Mario's decision.
+        @return state       :   Game data based on Mario's decision-making results 
+        @return reward      :   Reward Value based on Mario's decision-making results 
+        @return done        :   Whether to reset the game according to the results of Mario's decision
+        """
+
+        state, reward, done = self.actionCoordinator.setStep(action)
+
+        self.writeLog(state, reward)
+        if reward == DEFINE._DEFINE_REWARD_MAX_MIN_VAL :
+           self.closeLogStream()
+
+        return (state, reward, done)
+
 
     def render(self, reward):
         """
@@ -66,10 +98,13 @@ class marioFacade(Iobserver):
         if self.viewController is DEFINE._DEFINE_NULL:
            logger.instanceEmptyAssertLog('viewController') 
 
-        self.viewController.render()
+        window = self.viewController.render()
 
         if self.viewController.get_marioView() is not DEFINE._DEFINE_NULL:
             self.update('reward', reward)
+
+        if self.mode == 'interactive':    
+            return window
 
     def reset(self):
         """
@@ -91,6 +126,9 @@ class marioFacade(Iobserver):
 
         self.observer.attach(self.actionCoordinator,'action')
 
+        self.observer.attach(self.actionLogger,'actionlog')
+        self.observer.attach(self.frameLogger,'framelog')
+
     def update(self, obsCategory, value):
         """
         @brief              :   Function to update instances registered in the observer class to the latest status
@@ -103,4 +141,29 @@ class marioFacade(Iobserver):
             self.observer.reward_notify(value)           
         elif obsCategory == 'action':
             self.observer.action_notify(value)
+        elif obsCategory == 'actionlog':            
+            stepNum = self.actionCoordinator.getStepNum()
+            self.actionLogger.setStepNum(stepNum)
+            self.observer.actionLogNotify( value )
+
+        elif obsCategory == 'framelog':            
+            stepNum = self.actionCoordinator.getStepNum()
+            self.frameLogger.setStepNum(stepNum)
+            self.observer.frameLogNotify( value )
+
+    def writeLog(self, frame, reward):
+        self.update('actionlog', reward)
+        self.update('framelog', frame)
+
+    def makeLog(self):
+        self.frameLogger.makeLogFile()
+        self.actionLogger.makeLogFile()
+
+    def closeLogStream(self):
+        self.frameLogger.closeStream()
+        self.actionLogger.closeStream()
+
+    def reviveScenarioPoint(self):
+        #TODO get specific scenario state data from logfile and set that data at window
+        return "A"
 

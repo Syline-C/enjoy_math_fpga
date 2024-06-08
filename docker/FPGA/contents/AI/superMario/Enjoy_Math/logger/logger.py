@@ -6,3 +6,6 @@ class logger:
     def variableNoneAssertLog( variable ):
         raise AssertionError( variable + ' is None')
 
+    def fileStreamNoneAssertLog( stream ):
+        raise AssertionError( stream + ' is None')
+

@@ -19,9 +19,10 @@ class superMarioActionCoordinator:
         @return             :   None
         """
         self.controllerBuilder  = controllerBuilder
+        self.stepNum            = 0
 
         self.modelController    = controllerBuilder.get_marioModelController()
-        self.viewController   = controllerBuilder.get_marioViewController()
+        self.viewController     = controllerBuilder.get_marioViewController()
 
     def makeStep(self):
         """
@@ -32,7 +33,30 @@ class superMarioActionCoordinator:
         @return done        :   Whether to reset the game according to the results of Mario's decision as Boolean(dictonary[2])
         """
         self.modelController.memory_update()
-
+        self.stepNum = self.stepNum + 1
         ## TODO connect to reenforcement Logic
         return self.viewController.step(self.controllerBuilder.gymMario.gymMarioEnv.action_space.sample())
 
+    def setStep(self, action):
+        """
+        TODO                :   Connect to reinforcement learning logic for Mario's decision making  
+        @brief              :   Function that returns data based on the results of Mario's decision.
+        @return state       :   Game data based on Mario's decision-making results as Integer(dictonary[0]) 
+        @return reward      :   Reward Value based on Mario's decision-making results as Float(dictornary[1])
+        @return done        :   Whether to reset the game according to the results of Mario's decision as Boolean(dictonary[2])
+        """
+        self.modelController.memory_update()
+        self.stepNum = self.stepNum + 1
+        ## TODO connect to reenforcement Logic
+        return self.viewController.step(action)
+
+    def getStepNum(self):
+        return self.stepNum
+
+    def revivePoint(self):
+        return "A"
+
+    def getPointData(self):
+        return "A"
+    def setImageData(self,frame):
+        return "A"

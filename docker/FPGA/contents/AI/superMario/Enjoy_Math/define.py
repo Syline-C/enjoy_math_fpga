@@ -33,4 +33,10 @@ class DEFINE:
 
     _DEFINE_LIFE_IS_OVER            =   0xff
 
+    _DEFINE_ACTION_LOG_DIR          =   "LOG/action"
+    _DEFINE_FRAME_LOG_DIR           =   "LOG/frame"
+
+
+    _DEFINE_REWARD_MAX_VAL          =   15
+    _DEFINE_REWARD_MAX_MIN_VAL      =   -15
 

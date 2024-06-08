@@ -16,7 +16,7 @@ from ...view.property.superMarioViewProperty import superMarioViewProperty
 
 class superMarioViewController(IsuperMarioView):
 
-    def __init__(self, gymEnv, title):
+    def __init__(self, gymEnv, title, mode):
         """ 
         @brief              :   Function to initialize the View Controller class that control view classe
         @param gymMario     :   openAI's super mario bros environment
@@ -24,6 +24,7 @@ class superMarioViewController(IsuperMarioView):
         @return             :   None
         """
         self.title          =   title
+        self.mode           =   mode
         self.marioView      =   None
         self.gymEnv         =   gymEnv
         self.marioView      =   self.set_superMarioView()
@@ -44,7 +45,6 @@ class superMarioViewController(IsuperMarioView):
         state = result[0]
         reward = result[1]
         done    = result[2]
-
         return state, reward, done
 
     def render(self):
@@ -52,7 +52,12 @@ class superMarioViewController(IsuperMarioView):
         @brief              :   Function that renders the screen on a window based on data
         @return             :   None
         """
-        self.marioView.render()
+
+        if self.mode == 'command':
+            self.marioView.render()
+        if self.mode == 'interactive':
+            window = self.marioView.render()
+            return window
 
     def reset(self):
         """
@@ -61,12 +66,13 @@ class superMarioViewController(IsuperMarioView):
         """
         self.marioView.reset()
 
+
     def set_superMarioView(self):
         """ 
         @brief              :   Function to create and assign a Super Mario view class
         @return marioModel  :   mario view class instance
         """
-        marioView = superMarioView( self.gymEnv)
+        marioView = superMarioView( self.gymEnv, self.mode)
 
         if marioView is  DEFINE._DEFINE_NULL:
             logger.instanceEmptyAssertLog("View")
@@ -79,3 +85,6 @@ class superMarioViewController(IsuperMarioView):
         @return marioModel  :   mario view class instance
         """
         return self.marioView
+
+    def set_imageData(self):
+        return "A"

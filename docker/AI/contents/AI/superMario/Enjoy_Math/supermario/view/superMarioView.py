@@ -17,7 +17,7 @@ from .draw.draw import draw
 
 class superMarioView(IsuperMarioView):
 
-    def __init__(self,  gym):
+    def __init__(self,  gym, mode):
         """ 
         @brief              :   Function that initializes a class that outputs ROM file data to Windows.
         @param gym          :   openAI's gym environment
@@ -27,6 +27,7 @@ class superMarioView(IsuperMarioView):
         self.viewer             =   gym.gymMarioEnv.viewer
         self.screen             =   gym.gymMarioEnv.screen
         self.done               =   gym.gymMarioEnv.done
+        self.mode               =   mode
 
         self.viewProperty       =   superMarioViewProperty()
         self.window             =   None
@@ -45,6 +46,10 @@ class superMarioView(IsuperMarioView):
                 self.viewer.open()
                 self.get_img_data(self.screen)
             self.show(self.screen)
+            
+            if self.mode == 'interactive':
+                return self.window
+
         elif mode == 'rgb_array':
             return self.screen
         else:
@@ -107,6 +112,9 @@ class superMarioView(IsuperMarioView):
         self.image = image
         image.blit(0, 0, width=width, height=height)
 
+    def set_imageData(self, frame):
+        return "A"
+
     def show(self, frame):
         """ 
         @brief              :   Function to output game data extracted from ROM file to Windows
@@ -137,7 +145,6 @@ class superMarioView(IsuperMarioView):
         # send the image to the window
         self.image = image
         image.blit(0, 0, width=width, height=height)
-        #self.window.flip()
 
     @property
     def is_open(self):

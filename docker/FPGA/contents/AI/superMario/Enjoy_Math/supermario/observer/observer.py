@@ -13,8 +13,10 @@ class observer:
         @brief              :   Function to initialize the observer class that stores instances for monitoring
         @return  	    :   None
         """
-        self.actionObserver      =   []
-        self.rewardObserver      =   []
+        self.actionObserver         =   []
+        self.rewardObserver         =   []
+        self.actionLogObserver      =   []
+        self.frameLogObserver       =   []
     
     def attach(self, observer, obsCategory):
         """ 
@@ -28,6 +30,10 @@ class observer:
             self.actionObserver.append(observer)
         elif obsCategory == 'reward':
             self.rewardObserver.append(observer)
+        elif obsCategory == 'actionlog':
+            self.actionLogObserver.append(observer)
+        elif obsCategory == 'framelog':
+            self.frameLogObserver.append(observer)
 
     def detach(self, observer, obsCategory):
         """ 
@@ -40,6 +46,11 @@ class observer:
             self.actionObserver.remove(observer)
         elif obsCategory == 'reward':
             self.rewardObserver.remove(observer)
+        elif obsCategory == 'actionlog':
+            self.actionLogObserver.remove(observer)
+        elif obsCategory == 'framelog':
+            self.frameLogObserver.remove(observer)
+
 
     def action_notify(self, value):
         """ 
@@ -58,4 +69,23 @@ class observer:
         """
         for obs in self.rewardObserver:
             obs.update(reward)
+    
+    def frameLogNotify(self, reward ):
+        """ 
+        @brief              :   Update instances that need to be updated according to the results of the reward.
+        @param  value       :   A value that needs to be updated according to the result of the reward
+        @return  	    :   None
+        """
+        for obs in self.frameLogObserver:
+            obs.update(reward)
+
+    def actionLogNotify(self, frame):
+        """ 
+        @brief              :   Update instances that need to be updated according to the results of the reward.
+        @param  value       :   A value that needs to be updated according to the result of the reward
+        @return  	    :   None
+        """
+        for obs in self.actionLogObserver:
+            obs.update(frame)
+    
     
